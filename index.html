@@ -19,8 +19,6 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
@@ -42,7 +40,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index.php">
+                <a class="nav-link" href="index.html">
 
                     <span>Dashboard</span></a>
             </li>
@@ -93,36 +91,18 @@
 
                                 <span><a id="download" style="display: none;"><button type="button" class="btn btn-primary mb-4"> Download</button></a></span>
 
-                                <button type="button" id="stop" class="btn btn-danger">Record Audio</button>
-                                <button type="button" onclick="recordAudio()" class="btn btn-info">Record Audio</button>
-
-
+                                <button type="button" id="stop" onclick="stopRecording()" class="btn btn-danger">Stop</button>
                                 <button type="button" onclick="recordVideo()" class="btn btn-info">Record Video</button>
                                 <button type="button" onclick="recordScreen()" class="btn btn-info">Record Screen</button>
                                 <div class="p-2">
                                     <video autoplay controls height='480' width="640" id="vid" muted></video>
                                 </div>
                             </div>
-                            <!-- Card Body -->
-
-
                         </div>
                     </div>
                 </div>
-
-                <!-- Pie Chart -->
-
             </div>
-            <!-- End of Main Content -->
         </div>
-        <!-- Bootstrap core JavaScript-->
-
-
-        <!-- Core plugin JavaScript-->
-
-
-        <!-- Custom scripts for all pages-->
-        <!--   <script src="js/sb-admin-2.min.js"></script> -->
         <script src="recording.js"></script>
 </body>
 
