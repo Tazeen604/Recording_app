@@ -1,9 +1,3 @@
-window.onload = function() {
-    navigator.mediaDevices.getUserMedia({ audio: true, video: true }).then(stream => {
-        document.getElementById("vid").srcObject = stream;
-    });
-}
-
 let shouldStop = false;
 let stopped = false;
 const videoElement = document.getElementsByTagName("video")[0];
@@ -31,10 +25,11 @@ stopButton.addEventListener('click', function() {
 });
 
 
-
+let recordedChunks = [];
 
 const handleRecord = function({ stream, mimeType }) {
-    let recordedChunks = [];
+    videoElement.srcObject = stream;
+
     stopped = false;
     const mediaRecorder = new MediaRecorder(stream);
     mediaRecorder.ondataavailable = function(e) {
@@ -46,37 +41,42 @@ const handleRecord = function({ stream, mimeType }) {
             stopped = true;
         }
     };
-    mediaRecorder.onstop = function() {
-        const blob = new Blob(recordedChunks, {
-            type: mimeType
-        });
-        recordedChunks = []
-        const filename = window.prompt('Enter file name');
-        downloadLink.href = URL.createObjectURL(blob);
-        downloadLink.download = `${filename || 'recording'}.webm`;
-        stopRecord();
-        videoElement.srcObject = null;
-        //  document.getElementById("vid").srcObject = stream;
-    };
-    mediaRecorder.start(200);
+
 };
 
-//audio recording
-async function recordAudio() {
-    const mimeType = 'audio/webm';
-    shouldStop = false;
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    handleRecord({ stream, mimeType })
+function stopRecording() {
+
+    const blob = new Blob(recordedChunks, {
+        type: 'video/mp4;'
+    });
+    recordedChunks = [];
+    const filename = window.prompt('Enter file name');
+    downloadLink.href = URL.createObjectURL(blob);
+    downloadLink.download = `${filename || 'recording'}.webm`;
+    stopRecord();
+    videoElement.srcObject = null;
+    //  document.getElementById("vid").srcObject = stream;
 }
+//mediaRecorder.start(200);
+
+//audio recording
+//async function recordAudio() {
+//   const mimeType = 'audio/webm';
+//   shouldStop = false;
+//    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+//   handleRecord({ stream, mimeType })
+//}
 
 //video recording
 async function recordVideo() {
     const mimeType = 'video/webm';
     shouldStop = false;
     const constraints = {
-        video: true
+        video: true,
+        audio: false
     };
     const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    startRecord();
     handleRecord({ stream, mimeType })
 }
 
@@ -84,6 +84,7 @@ async function recordVideo() {
 //screen recording
 
 async function recordScreen() {
+    startRecord();
     const mimeType = 'video/webm';
     shouldStop = false;
     const constraints = {
