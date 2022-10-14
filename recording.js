@@ -24,14 +24,16 @@ stopButton.addEventListener('click', function() {
     shouldStop = true;
 });
 
-
+let mediaRecorder;
 let recordedChunks = [];
 
 const handleRecord = function({ stream, mimeType }) {
     videoElement.srcObject = stream;
 
     stopped = false;
-    const mediaRecorder = new MediaRecorder(stream);
+    mediaRecorder = new MediaRecorder(stream);
+    mediaRecorder.start(200);
+    console.log(stream);
     mediaRecorder.ondataavailable = function(e) {
         if (e.data.size > 0) {
             recordedChunks.push(e.data);
@@ -45,19 +47,20 @@ const handleRecord = function({ stream, mimeType }) {
 };
 
 function stopRecording() {
-
+    console.log(recordedChunks);
     const blob = new Blob(recordedChunks, {
-        type: 'video/mp4;'
+        type: 'video/webm;'
     });
-    recordedChunks = [];
     const filename = window.prompt('Enter file name');
     downloadLink.href = URL.createObjectURL(blob);
+    videoLink = URL.createObjectURL(blob);
     downloadLink.download = `${filename || 'recording'}.webm`;
+    recordedChunks = [];
     stopRecord();
     videoElement.srcObject = null;
     //  document.getElementById("vid").srcObject = stream;
 }
-//mediaRecorder.start(200);
+
 
 //audio recording
 //async function recordAudio() {
@@ -119,5 +122,6 @@ async function recordScreen() {
         handleRecord({ stream, mimeType });
     };
     videoElement.srcObject = stream;
+    mediaRecorder.start(200);
     // document.getElementById("vid").srcObject = stream;
 }
